@@ -37,10 +37,12 @@ char* str_replace(const char* str, const char* old, const char* new_sub) {
 }
 
 // Función para enviar el mensaje de WhatsApp
-void enviar_mensaje(const char *numero_destino, const char *mensaje, const char *sid, const char *token, const char *from_number) {
+void enviar_mensaje(const char *numero_destino, const char *mensaje) {
     CURL *curl;
     CURLcode res;
-
+    const char *sid = "";
+    const char *token = "";
+    const char *from_number = "";
     // Formatear el número de destino
     char* numero_destino_formateado = str_replace(numero_destino, "+", "%2B");
     char* numero_formateado = str_replace(from_number, "+", "%2B");
@@ -87,26 +89,5 @@ void enviar_mensaje(const char *numero_destino, const char *mensaje, const char 
     }
 
     free(numero_destino_formateado);
+    free(numero_formateado);
 }
-
-int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        fprintf(stderr, "Uso: %s <numero_destino> <mensaje>\n", argv[0]);
-        return 1;
-    }
-
-    // Credenciales de Twilio
-    const char *sid = ""; // Sustituir con tu SID
-    const char *token = "";  // Sustituir con tu Token
-    const char *from_number = "";       // Número de Twilio para WhatsApp
-
-    // Obtener los parámetros de entrada
-    const char *numero_destino = argv[1];
-    const char *mensaje = argv[2];
-
-    // Enviar el mensaje
-    enviar_mensaje(numero_destino, mensaje, sid, token, from_number);
-
-    return 0;
-}
-

@@ -1,0 +1,16 @@
+# Imagen base
+FROM gcc:latest
+
+# Configuración del directorio de trabajo
+WORKDIR /app
+
+# Copiar los archivos del agente
+COPY agente.c .
+COPY prueba_estres.c .
+
+# Compilar el agente
+RUN gcc prueba_estres.c -o prueba_estres -lpthread
+RUN gcc agente.c -o agente -lpthread
+
+# Comando para ejecutar el agente
+CMD ["./agente"]

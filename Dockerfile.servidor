@@ -1,0 +1,26 @@
+# Imagen base
+FROM gcc:latest
+
+# Instalar herramientas necesarias
+RUN apt-get update && apt-get install -y \
+    curl \
+    libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configurar el directorio de trabajo
+WORKDIR /app
+
+# Copiar los archivos necesarios
+COPY servidor.c .
+COPY enviar_alerta.c .
+COPY enviar_alerta.h .
+COPY dashboard.txt .
+
+# Compilar los archivos del servidor y enviar_alerta
+RUN gcc servidor.c enviar_alerta.c -o servidor -lpthread -lcurl
+
+# Exponer el puerto del servidor
+EXPOSE 8080
+
+# Comando para ejecutar el servidor
+CMD ["./servidor"]
